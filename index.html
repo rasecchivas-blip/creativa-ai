@@ -1,0 +1,99 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CREATIVA AI</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#11101f;color:white;font-family:Arial,sans-serif}
+header{padding:22px;background:#1c1933;border-bottom:1px solid #40345f}
+.logo{font-size:25px;font-weight:bold;color:#b99aff}
+header p{color:#bbb;margin-bottom:0}
+main{max-width:650px;margin:35px auto;padding:18px}
+h1{font-size:32px;color:#c5aaff}
+.card{background:#211e38;padding:22px;border-radius:18px;border:1px solid #493b6d}
+label{display:block;margin:17px 0 8px;font-weight:bold}
+textarea,select{width:100%;padding:14px;border-radius:10px;background:#121124;color:white;border:1px solid #554777;font-size:16px}
+textarea{height:110px}
+button{width:100%;padding:16px;margin-top:20px;background:linear-gradient(90deg,#a27aff,#6845d9);border:0;border-radius:12px;color:white;font-size:17px;font-weight:bold}
+#resultado{display:none;margin-top:25px;background:#211e38;padding:20px;border-radius:15px;line-height:1.7}
+footer{text-align:center;color:#888;padding:30px}
+</style>
+</head>
+<body>
+<header>
+<div class="logo">✦ CREATIVA AI</div>
+<p>CREA · IMAGINA · INSPIRA</p>
+</header>
+<main>
+<h1>Tu imaginación no tiene límites.</h1>
+<p>Crea historias extraordinarias con nuestra herramienta creativa.</p>
+<div class="card">
+<h2>✍️ Generador de historias</h2>
+<label>¿Qué historia quieres crear?</label>
+<textarea id="idea" placeholder="Describe aquí tu idea..."></textarea>
+<label>Género</label>
+<select id="genero">
+<option>Terror y suspenso</option>
+<option>Misterio y leyendas</option>
+<option>Romance</option>
+<option>Fantasía</option>
+<option>Ciencia ficción</option>
+<option>Drama y superación</option>
+<option>Infantil</option>
+</select>
+<label>Duración</label>
+<select id="duracion">
+<option>Corta</option>
+<option>Media</option>
+<option>Larga</option>
+</select>
+<button onclick="crearHistoria()">✦ CREAR MI HISTORIA</button>
+</div>
+<div id="resultado">
+<h2 id="titulo"></h2>
+<p id="historia"></p>
+<button onclick="copiar()">COPIAR HISTORIA</button>
+</div>
+</main>
+<footer>CREATIVA AI © 2026 · Tu creatividad, nuestra inspiración.</footer>
+<script>
+function crearHistoria(){
+let idea=document.getElementById("idea").value.trim();
+let genero=document.getElementById("genero").value;
+let duracion=document.getElementById("duracion").value;
+if(!idea){alert("Primero escribe tu idea.");return;}
+let titulos={
+"Terror y suspenso":"La última noche",
+"Misterio y leyendas":"El secreto olvidado",
+"Romance":"Un encuentro inesperado",
+"Fantasía":"El mundo escondido",
+"Ciencia ficción":"El último mensaje",
+"Drama y superación":"Después de la tormenta",
+"Infantil":"La aventura maravillosa"
+};
+let partes=[
+"Todo comenzó cuando alguien decidió descubrir lo que se escondía detrás de aquella historia.",
+"La noche parecía tranquila, pero algo en el ambiente anunciaba que las cosas estaban a punto de cambiar.",
+"El protagonista encontró una señal que nadie más había querido investigar. Cada paso lo acercaba a una verdad inesperada.",
+"De pronto, una revelación cambió todo lo que creía saber. Ya no había vuelta atrás.",
+"Finalmente comprendió que aquella experiencia marcaría su vida para siempre."
+];
+let cantidad=duracion==="Corta"?2:duracion==="Media"?4:5;
+let texto="IDEA ORIGINAL: "+idea+"\n\nGÉNERO: "+genero+"\n\n";
+for(let i=0;i<cantidad;i++){texto+=partes[i]+"\n\n";}
+texto+="Y así comenzó una historia que nadie olvidaría jamás.";
+document.getElementById("titulo").innerText=titulos[genero];
+document.getElementById("historia").innerText=texto;
+document.getElementById("resultado").style.display="block";
+}
+function copiar(){
+let texto=document.getElementById("titulo").innerText+"\n\n"+document.getElementById("historia").innerText;
+if(navigator.clipboard){navigator.clipboard.writeText(texto).then(()=>alert("¡Historia copiada!"));}
+else{alert("Selecciona el texto para copiarlo.");}
+}
+</script>
+</body>
+</html>
