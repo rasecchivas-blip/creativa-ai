@@ -77,11 +77,7 @@ function createDemo(topicText, selectedStyle, selectedLength) {
     "Desarrolla la idea mediante escenas, argumentos o mensajes que mantengan la atención. " +
     endings[selectedLength] +
     "\n\n---\nContenido de demostración de CREATIVA AI.";
-}
 
-async function generateContent() {
-  
-  
 async function generateContent() {
   const idea = topic.value.trim();
 
