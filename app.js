@@ -80,57 +80,60 @@ function createDemo(topicText, selectedStyle, selectedLength) {
 }
 
 async function generateContent() {
+  
+  
+async function generateContent() {
   const idea = topic.value.trim();
 
   if (!idea) {
-    message.textContent = "Primero escribe una idea para comenzar.";
+    message.textContent = "Primero escribe una idea.";
     topic.focus();
     return;
   }
 
   generate.disabled = true;
-  generate.textContent = "✦ PREPARANDO CONTENIDO...";
+  generate.textContent = "✦ CREANDO CON INTELIGENCIA ARTIFICIAL...";
   message.textContent = "";
 
   try {
-    // MODO DEMOSTRACIÓN.
-    // Más adelante conectaremos aquí nuestro backend de IA.
-    await new Promise(resolve => setTimeout(resolve, 700));
-
-    const output = createDemo(
-      idea,
-      style.value,
-      length.value
+    const response = await fetch(
+      "https://creativa-ai-engine.rasec-chivas.workers.dev/api/generate",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          idea: idea,
+          module: currentModule,
+          style: style.value,
+          length: length.value
+        })
+      }
     );
 
-    result.textContent = output;
-    message.textContent = "Contenido de demostración generado correctamente.";
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || "Error al generar contenido.");
+    }
+
+    if (!data.content) {
+      throw new Error("La respuesta llegó vacía.");
+    }
+
+    result.textContent = data.content;
+    message.textContent =
+      "¡CREATIVA AI ha creado tu contenido correctamente!";
+
   } catch (error) {
-    message.textContent = "Ocurrió un error. Inténtalo nuevamente.";
     console.error(error);
+    message.textContent =
+      "No pudimos conectar con el motor: " + error.message;
+
   } finally {
     generate.disabled = false;
     generate.textContent = "✦ GENERAR CONTENIDO";
   }
 }
-
-generate.addEventListener("click", generateContent);
-
-document.getElementById("copy").addEventListener("click", async () => {
-  const content = result.innerText;
-
-  if (!content.trim() || content.includes("Aquí aparecerá")) {
-    message.textContent = "Primero genera un contenido.";
-    return;
-  }
-
-  try {
-    await navigator.clipboard.writeText(content);
-    message.textContent = "¡Contenido copiado correctamente!";
-  } catch (error) {
-    message.textContent = "No se pudo copiar. Intenta seleccionar el texto.";
-  }
-});
-
-// Inicializar la plataforma
-changeModule("stories");
+  
